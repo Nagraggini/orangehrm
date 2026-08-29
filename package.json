@@ -1,0 +1,23 @@
+{
+  "name": "orangehrm",
+  "version": "1.0.0",
+  "description": "OrangeHRM",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nagraggini/orangehrm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Nagraggini/orangehrm/issues"
+  },
+  "homepage": "https://github.com/Nagraggini/orangehrm#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.4.0"
+  }
+}
