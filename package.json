@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Nagraggini/orangehrm#readme",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.4.0"
+    "@types/node": "^26.6.1",
+    "dotenv": "^17.4.2"
   }
 }
