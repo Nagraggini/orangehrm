@@ -6,6 +6,10 @@ export class DashBoardPage {
     readonly topRightAccountDropdownMenu: Locator;
     readonly logoutButton: Locator;
 
+    // Side menu
+    readonly adminButton: Locator;
+    readonly pimButton: Locator;
+
     constructor(page: Page) {
         this.page = page;
         this.fullNameLabel = page.locator(".oxd-userdropdown-name");
@@ -15,6 +19,8 @@ export class DashBoardPage {
         this.logoutButton = page.locator(
             "//a[@class='oxd-userdropdown-link' and normalize-space()='Logout']",
         );
+        this.adminButton = page.locator("//a[normalize-space()='Admin']");
+        this.pimButton = page.locator("//a[normalize-space()='PIM']");
     }
 
     async logout(): Promise<void> {
