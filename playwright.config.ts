@@ -20,6 +20,12 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
  */
 export default defineConfig({
     testDir: "./tests",
+
+    timeout: 60000, // Tesztenkénti maximális idő (60 mp).
+    expect: {
+        timeout: 10000, // Assertion-ök várakozási ideje (10 mp).
+    },
+
     /* Run tests in files in parallel */
     fullyParallel: true,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -32,6 +38,8 @@ export default defineConfig({
     reporter: "html",
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
+        actionTimeout: 15000, // Klikkelések, gépelések időkorlátja.
+        navigationTimeout: 30000, // Oldalbetöltések időkorlátja.
         // Használhatod a BASE_URL-t közvetlenül a configban:
         baseURL: process.env.BASE_URL,
 
@@ -41,6 +49,7 @@ export default defineConfig({
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         screenshot: "only-on-failure",
         trace: "on-first-retry",
+        headless: true,
     },
 
     /* Configure projects for major browsers */

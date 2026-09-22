@@ -11,7 +11,7 @@ test.describe("Login Tests", () => {
     // Soronként haladunk, az any-val elfogadunk minden típust.
 
     // Backtick (Visszafelé dőlő ékezet)-t használj!
-    test(`Add new user`, async ({
+    test(`Add new employee`, async ({
         page,
         loginPage,
         dashBoardPage,
@@ -36,6 +36,8 @@ test.describe("Login Tests", () => {
         await test.step("Validate new employee is in the list", async () => {
             await pimPage.employeeListButton.click();
             await pimPage.employeeNameSearchInput.fill(lastName);
+            // Megvárjuk, amíg az oldal feldolgozza a kérést.
+            await page.waitForLoadState("networkidle");
             await pimPage.searchEmployeeButton.click();
 
             (await pimPage.getSpecificEmployeeId(lastName)) > 0;
