@@ -1,5 +1,6 @@
 import { test, expect } from "../fixtures/BaseTest";
 import { LoginPage } from "../pages/LoginPage";
+import { PIMPage } from "../pages/PIMPage";
 import { readData } from "../utils/dataReader";
 
 const testData = readData("./data/LoginData.json");
@@ -14,7 +15,7 @@ test.describe("Login Tests", () => {
         page,
         loginPage,
         dashBoardPage,
-        adminPage,
+        pimPage,
     }) => {
         test.skip(data.run !== "yes", "Run flag is not yes.");
 
@@ -23,17 +24,25 @@ test.describe("Login Tests", () => {
             await loginPage.login(data.username, data.password);
         });
 
+        const lastName = await pimPage.generateRandomCharacters(8);
+
         await test.step("Add New Employee", async () => {
             await dashBoardPage.pimButton.click();
-            await page.pause();
+            await pimPage.addNewEmployeeButton.click();
+
+            await pimPage.fillTheFormAndSave("Jane", "", lastName);
         });
 
         await test.step("Validate new employee is in the list", async () => {
-            // TODO
+            await pimPage.employeeListButton.click();
+            await pimPage.employeeNameSearchInput.fill(lastName);
+            await pimPage.searchEmployeeButton.click();
+
+            (await pimPage.getSpecificEmployeeId(lastName)) > 0;
         });
 
         await test.step("Delete new employee", async () => {
-            // TODO
+            await pimPage.deleteSpecificEmployee(lastName);
         });
 
         await test.step("Logout", async () => {
