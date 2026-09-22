@@ -1,4 +1,5 @@
 import { Page, Locator } from "@playwright/test";
+import { NewEmployee } from "../models/NewEmployee";
 
 export class PIMPage {
     readonly page: Page;
@@ -13,9 +14,13 @@ export class PIMPage {
 
     // Search boxes on employee list site
     readonly employeeNameSearchInput: Locator;
+    readonly employeeIdSearchInput: Locator;
     readonly searchEmployeeButton: Locator;
 
     readonly yesDeleteButton: Locator;
+
+    // Edit employee
+    readonly firstSaveButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -29,11 +34,18 @@ export class PIMPage {
             "(//input[@class='oxd-input oxd-input--active'])[2]",
         );
         this.saveButton = page.locator("//button[normalize-space()='Save']");
+        this.firstSaveButton = page.locator(
+            "(//button[normalize-space()='Save'])[1]",
+        );
+
         this.employeeListButton = page.locator(
             "//a[normalize-space()='Employee List']",
         );
         this.employeeNameSearchInput = page.locator(
             "//label[normalize-space()='Employee Name']/../following-sibling::div//input",
+        );
+        this.employeeIdSearchInput = page.locator(
+            "//label[normalize-space()='Employee Id']/../following-sibling::div//input",
         );
         this.searchEmployeeButton = page.locator(
             "//button[normalize-space()='Search']",
@@ -55,6 +67,10 @@ export class PIMPage {
         await this.saveButton.click();
     }
 
+    async getEmployeeId(): Promise<string> {
+        return this.employeeIdInput.inputValue();
+    }
+
     async generateRandomCharacters(length: number): Promise<string> {
         var result = "";
         var characters =
@@ -68,25 +84,39 @@ export class PIMPage {
         return result;
     }
 
-    async getSpecificEmployeeId(lastName: string): Promise<number> {
-        const employeeId: number = Number(
-            this.page.locator(
+    async getSpecificEmployeeIdByLastName(lastName: string): Promise<string> {
+        const employeeId = await this.page
+            .locator(
                 "((//div[normalize-space()='" +
                     lastName +
                     "'])[2]/../preceding-sibling::div)[2]",
-            ).textContent,
-        );
-        return employeeId;
+            )
+            .textContent();
+        return employeeId ?? "";
     }
 
-    async deleteSpecificEmployee(lastName: string): Promise<void> {
+    async deleteSpecificEmployee(employee: NewEmployee): Promise<void> {
         await this.page
             .locator(
                 "(//div[normalize-space()='" +
-                    lastName +
+                    employee.employeeId +
                     "'])[2]/../following-sibling::div//i[@class='oxd-icon bi-trash']",
             )
             .click();
         await this.yesDeleteButton.click();
+    }
+
+    async editSpecificEmployee(modifiedEmployee: NewEmployee): Promise<void> {
+        await this.page
+            .locator(
+                "(//div[normalize-space()='" +
+                    modifiedEmployee.employeeId +
+                    "'])[2]/../following-sibling::div//i[@class='oxd-icon bi-pencil-fill']",
+            )
+            .click();
+        await this.firstNameInput.fill(modifiedEmployee.firstName);
+        await this.middleNameInput.fill(modifiedEmployee.middleName);
+        await this.lastNameInput.fill(modifiedEmployee.lastName);
+        await this.firstSaveButton.click();
     }
 }

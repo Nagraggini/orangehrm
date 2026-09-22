@@ -1,6 +1,5 @@
-import { test, expect } from "../fixtures/BaseTest";
-import { LoginPage } from "../pages/LoginPage";
-import { readData } from "../utils/dataReader";
+import { test, expect } from "../../fixtures/BaseTest";
+import { readData } from "../../utils/dataReader";
 
 // Jobb klikk a fájlon és Copy Relative Path. /-re figyelj!
 //Típus biztonsággal, elkelhetjük a fordításkori futás esetén bekövetkező hibákat.
@@ -8,7 +7,7 @@ const testData = readData("./data/LoginData.json");
 // const testData = readData('./data/LoginData.csv');
 //const testData = readData("./data/LoginData.xlsx", "Sheet1");
 
-test.describe("Login Tests", () => {
+test.describe("TC03 Data driven login test", () => {
     // Soronként haladunk, az any-val elfogadunk minden típust.
     for (const data of testData) {
         // Backtick (Visszafelé dőlő ékezet)-t használj!
