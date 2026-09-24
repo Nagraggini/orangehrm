@@ -3,7 +3,10 @@ import { NewEmployee } from "../models/NewEmployee";
 
 export class PIMPage {
     readonly page: Page;
+
+    // Create a new employee
     readonly addNewEmployeeButton: Locator;
+
     readonly firstNameInput: Locator;
     readonly middleNameInput: Locator;
     readonly lastNameInput: Locator;
@@ -16,6 +19,8 @@ export class PIMPage {
     readonly employeeNameSearchInput: Locator;
     readonly employeeIdSearchInput: Locator;
     readonly searchEmployeeButton: Locator;
+
+    readonly resultLabel: Locator;
 
     readonly yesDeleteButton: Locator;
 
@@ -34,6 +39,7 @@ export class PIMPage {
             "(//input[@class='oxd-input oxd-input--active'])[2]",
         );
         this.saveButton = page.locator("//button[normalize-space()='Save']");
+
         this.firstSaveButton = page.locator(
             "(//button[normalize-space()='Save'])[1]",
         );
@@ -51,19 +57,22 @@ export class PIMPage {
             "//button[normalize-space()='Search']",
         );
 
+        this.resultLabel = page.locator(
+            "//span[contains(normalize-space(),'Record')]",
+        );
+
         this.yesDeleteButton = page.locator(
             "//button[normalize-space()='Yes, Delete']",
         );
     }
 
-    async fillTheFormAndSave(
-        firstName: string,
-        middleName: string,
-        lastName: string,
-    ): Promise<void> {
-        await this.firstNameInput.fill(firstName);
-        await this.middleNameInput.fill(middleName);
-        await this.lastNameInput.fill(lastName);
+    async fillTheFormAndSave(employee: NewEmployee): Promise<void> {
+        // Megvárjuk, amíg az oldal feldolgozza a kérést.
+        await this.page.waitForLoadState("networkidle");
+        await this.firstNameInput.fill(employee.firstName);
+        await this.middleNameInput.fill(employee.middleName);
+        await this.lastNameInput.fill(employee.lastName);
+        await this.employeeIdInput.fill(employee.employeeId);
         await this.saveButton.click();
     }
 
@@ -71,17 +80,31 @@ export class PIMPage {
         return this.employeeIdInput.inputValue();
     }
 
-    async generateRandomCharacters(length: number): Promise<string> {
+    async generateRandomCharacters(
+        length: number,
+        onlyNumbers: boolean,
+    ): Promise<string> {
         var result = "";
-        var characters =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        var numbers = "012345678901234567890123456789";
         var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(
-                Math.floor(Math.random() * charactersLength),
-            );
+        if (!onlyNumbers) {
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(
+                    Math.floor(Math.random() * charactersLength),
+                );
+            }
+            console.log("Chars: " + result);
+            return result;
+        } else {
+            for (var i = 0; i < length; i++) {
+                result += numbers.charAt(
+                    Math.floor(Math.random() * charactersLength),
+                );
+            }
+            console.log("Numbers: " + result);
+            return result;
         }
-        return result;
     }
 
     async getSpecificEmployeeIdByLastName(lastName: string): Promise<string> {
@@ -118,5 +141,13 @@ export class PIMPage {
         await this.middleNameInput.fill(modifiedEmployee.middleName);
         await this.lastNameInput.fill(modifiedEmployee.lastName);
         await this.firstSaveButton.click();
+    }
+
+    async getResultLabelText(): Promise<string> {
+        /*
+        (88) Records Found
+        No Records Found
+        */
+        return (await this.resultLabel.textContent()) || "";
     }
 }

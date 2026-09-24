@@ -25,5 +25,6 @@ export class LoginPage {
         await this.usernameInput.fill(user);
         await this.passwordInput.fill(pass);
         await this.loginButton.click();
+        console.log("Dashboard URL:", this.page.url());
     }
 }
