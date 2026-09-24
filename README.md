@@ -44,6 +44,7 @@ Install the project dependencies and required Playwright browsers:
 ```bash
 npm install
 npx playwright install
+npm install dotenv
 ```
 
 ## Running the Tests
