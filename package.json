@@ -18,6 +18,14 @@
   "homepage": "https://github.com/Nagraggini/orangehrm#readme",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.4.0"
+    "@types/node": "^26.6.1",
+    "@types/xlsx": "^0.0.35",
+    "dotenv": "^17.4.2",
+    "install": "^0.13.0",
+    "npm": "^12.0.2",
+    "xlsx": "^0.18.5"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.2"
   }
 }
