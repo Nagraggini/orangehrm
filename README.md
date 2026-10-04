@@ -1,12 +1,5 @@
-# orangehrm
- OrangeHRM
-
-
 <!--TODO create only 10-12 pc tests.-->
-
-
 ![Playwright Tests](https://github.com/Nagraggini/orangehrm/actions/workflows/playwright.yml/badge.svg)
-
 
 # OrangeHRM Automation Framework
 
@@ -30,7 +23,8 @@ Tested web application: https://opensource-demo.orangehrmlive.com/
 
 ## Test Report
 
-<!--TODO Allure Report -->
+![Test Report](docs/images/allure-report.png)
+📊 [View Allure Report](https://nagraggini.github.io/orangehrm/)
 
 ## Prerequisites
 
@@ -44,7 +38,6 @@ Install the project dependencies and required Playwright browsers:
 ```bash
 npm install
 npx playwright install
-npm install dotenv
 ```
 
 ## Running the Tests
