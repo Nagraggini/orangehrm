@@ -41,10 +41,11 @@ jobs:
                   distribution: "temurin"
                   java-version: "17"
 
-            - name: Setup Allure CLI
-              uses: capralifecycle/setup-allure@v1
-              with:
-                  allure-version: "2.29.0"
+            - name: Install Allure CLI
+              run: |
+                  wget https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
+                  tar -zxvf allure-2.29.0.tgz
+                  echo "\(PWD/allure-2.29.0/bin" >>\)GITHUB_PATH
 
             - name: Run Playwright tests
               run: npx playwright test
